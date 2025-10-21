@@ -1,6 +1,42 @@
-# Getting Started with Create React App
+# Valkyries Site
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## CI/CD and Infrastructure
+
+This project includes a complete CI/CD pipeline and infrastructure setup using GitHub Actions, Terraform, AWS S3, and CloudFront.
+
+### Infrastructure
+
+The infrastructure is managed using Terraform and includes:
+
+- An S3 bucket named `valkyries-site-bucket` for hosting the website
+- A CloudFront distribution for content delivery
+- Proper IAM roles and policies for secure access
+- A separate development environment path using a random UUID
+
+### CI/CD Pipeline
+
+The CI/CD pipeline is implemented using GitHub Actions and automatically:
+
+1. Deploys to production when changes are merged into the `master` branch
+2. Deploys to a hidden development environment when changes are merged into the `develop` branch
+3. Builds the React application into a static site
+4. Uploads the built files to the appropriate S3 location
+5. Invalidates the CloudFront cache to ensure the latest content is served
+
+### Setup Requirements
+
+To use the CI/CD pipeline, you need to set up the following GitHub secrets:
+
+- `AWS_ACCESS_KEY_ID`: Your AWS access key with appropriate permissions
+- `AWS_SECRET_ACCESS_KEY`: Your AWS secret key
+
+The AWS user should have permissions for:
+- S3 (read/write)
+- CloudFront (create invalidations)
+- IAM (if you want GitHub Actions to create/update resources)
+- Other AWS services used by Terraform
 
 ## Available Scripts
 

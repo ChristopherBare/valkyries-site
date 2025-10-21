@@ -1,0 +1,152 @@
+.social-links {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, var(--sky-blue) 0%, var(--light-blue) 100%);
+    color: var(--white);
+}
+
+.social-links h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: var(--white);
+}
+
+.social-description {
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.social-icons-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.social-icon-link {
+    text-decoration: none;
+    color: var(--dark-text);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.social-icon-link:hover {
+    transform: translateY(-5px);
+}
+
+.social-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px var(--shadow);
+    padding: 1.5rem;
+    border: 2px solid var(--gold);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.social-icon:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+/* Ensure Lucide icons are centered and color-customizable */
+.social-icon svg {
+    width: 80px;
+    height: 80px;
+    stroke-width: 1.75;
+}
+
+/* Dynamic icon colors based on platform */
+.social-icon-link[data-platform="Facebook"] .social-icon svg {
+    stroke: #1877f2; /* Facebook blue */
+}
+
+.social-icon-link[data-platform="Instagram"] .social-icon svg {
+    stroke: #e1306c; /* Instagram pink */
+}
+
+.social-icon-link[data-platform="Twitter"] .social-icon svg {
+    stroke: #1da1f2; /* Twitter blue */
+}
+
+.social-icon-link[data-platform="YouTube"] .social-icon svg {
+    stroke: #ff0000; /* YouTube red */
+}
+
+.name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--dark-text);
+    text-align: center;
+}
+
+.contact-info {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--white);
+}
+
+.contact-info p {
+    margin-bottom: 0.5rem;
+}
+
+.email a {
+    color: var(--gold);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.email a:hover {
+    color: var(--gold-light);
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .social-links {
+        padding: 3rem 0;
+    }
+
+    .social-description {
+        font-size: 1rem;
+        padding: 0 1rem;
+    }
+
+    .social-icons-container {
+        gap: 1.5rem;
+    }
+
+    .social-icon {
+        width: 100px;
+        height: 100px;
+        padding: 1rem;
+    }
+
+    .social-icon svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .name {
+        font-size: 0.8rem;
+    }
+
+    .contact-info {
+        padding: 1.5rem;
+        margin: 0 1rem;
+    }
+}

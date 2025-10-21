@@ -1,0 +1,103 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    outputs:
+      bucket_name: ${{ steps.terraform-output.outputs.bucket_name }}
+      cloudfront_distribution_id: ${{ steps.terraform-output.outputs.cloudfront_distribution_id }}
+      dev_path_uuid: ${{ steps.terraform-output.outputs.dev_path_uuid }}
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.0.0
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform init
+
+      - name: Terraform Plan
+        run: |
+          cd terraform
+          terraform plan
+
+      - name: Terraform Apply
+        run: |
+          cd terraform
+          terraform apply -auto-approve
+
+      - name: Terraform Output
+        id: terraform-output
+        run: |
+          cd terraform
+          echo "bucket_name=$(terraform output -raw website_bucket_name)" >> $GITHUB_OUTPUT
+          echo "cloudfront_distribution_id=$(terraform output -raw cloudfront_distribution_id)" >> $GITHUB_OUTPUT
+          echo "dev_path_uuid=$(terraform output -raw dev_path_uuid)" >> $GITHUB_OUTPUT
+
+  build-and-deploy:
+    name: 'Build and Deploy'
+    needs: terraform
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to S3 (Master Branch)
+        if: github.ref == 'refs/heads/master'
+        run: |
+          aws s3 sync build/ s3://${{ needs.terraform.outputs.bucket_name }}/ --delete
+
+      - name: Deploy to S3 (Develop Branch)
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          aws s3 sync build/ s3://${{ needs.terraform.outputs.bucket_name }}/${{ needs.terraform.outputs.dev_path_uuid }}/dev/ --delete
+
+      - name: Invalidate CloudFront Cache (Master Branch)
+        if: github.ref == 'refs/heads/master'
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ needs.terraform.outputs.cloudfront_distribution_id }} --paths "/*"
+
+      - name: Invalidate CloudFront Cache (Develop Branch)
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ needs.terraform.outputs.cloudfront_distribution_id }} --paths "/${{ needs.terraform.outputs.dev_path_uuid }}/dev/*"
