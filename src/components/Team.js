@@ -5,7 +5,7 @@ const Team = () => {
     const playersData = [
         { id: 1, name: 'Olivia', birthday: '2015-06-12', position: 'Pitcher' },
         { id: 2, name: 'Aurora', birthday:'2015-02-06', position: 'Catcher', focus: 'top' }, //focus is optional so that you can tweak the image position
-        { id: 3, name: 'Ava', birthday: '2015-06-12', position: '1st Base' },
+        { id: 3, name: 'Jocelynn', birthday: '2015-02-28', position: '1st Base' },
         { id: 4, name: 'Isabella', birthday: '2015-06-12', position: '2nd Base' },
         { id: 5, name: 'Sophia', birthday: '2015-06-12', position: 'Shortstop' },
         { id: 6, name: 'Mia', birthday: '2015-06-12', position: '3rd Base' },
