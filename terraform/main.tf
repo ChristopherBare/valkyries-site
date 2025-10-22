@@ -81,19 +81,17 @@ resource "aws_s3_bucket_policy" "website_bucket" {
   })
 }
 
-# CloudFront origin access identity
-resource "aws_cloudfront_origin_access_identity" "oai" {
-  comment = "OAI for Valkyries Site"
-}
-
 # CloudFront distribution
 resource "aws_cloudfront_distribution" "website_distribution" {
   origin {
-    domain_name = aws_s3_bucket.website_bucket.bucket_regional_domain_name
+    domain_name = aws_s3_bucket_website_configuration.website_bucket.website_endpoint
     origin_id   = aws_s3_bucket.website_bucket.bucket
-
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path
+    
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
 
@@ -118,6 +116,7 @@ resource "aws_cloudfront_distribution" "website_distribution" {
     min_ttl                = 0
     default_ttl            = 3600
     max_ttl                = 86400
+    compress               = true
   }
 
   # Cache behavior for development environment
@@ -138,6 +137,7 @@ resource "aws_cloudfront_distribution" "website_distribution" {
     min_ttl                = 0
     default_ttl            = 3600
     max_ttl                = 86400
+    compress               = true
   }
 
   restrictions {
@@ -169,6 +169,11 @@ output "cloudfront_distribution_id" {
 
 output "cloudfront_distribution_domain" {
   value = aws_cloudfront_distribution.website_distribution.domain_name
+}
+
+output "website_url" {
+  value = "https://${aws_cloudfront_distribution.website_distribution.domain_name}"
+  description = "The URL of the website"
 }
 
 output "dev_path_uuid" {

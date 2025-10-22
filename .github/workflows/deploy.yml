@@ -14,6 +14,7 @@ jobs:
       bucket_name: ${{ steps.terraform-output.outputs.bucket_name }}
       cloudfront_distribution_id: ${{ steps.terraform-output.outputs.cloudfront_distribution_id }}
       dev_path_uuid: ${{ steps.terraform-output.outputs.dev_path_uuid }}
+      website_url: ${{ steps.terraform-output.outputs.website_url }}
     
     steps:
       - name: Checkout Repository
@@ -50,16 +51,19 @@ jobs:
           BUCKET_NAME=$(terraform output -raw website_bucket_name)
           CLOUDFRONT_ID=$(terraform output -raw cloudfront_distribution_id)
           DEV_PATH_UUID=$(terraform output -raw dev_path_uuid)
+          WEBSITE_URL=$(terraform output -raw website_url)
           
           echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
           echo "cloudfront_distribution_id=$CLOUDFRONT_ID" >> $GITHUB_OUTPUT
           echo "dev_path_uuid=$DEV_PATH_UUID" >> $GITHUB_OUTPUT
+          echo "website_url=$WEBSITE_URL" >> $GITHUB_OUTPUT
 
       - name: Show Terraform Outputs
         run: |
           echo "Bucket: ${{ steps.terraform-output.outputs.bucket_name }}"
           echo "CloudFront ID: ${{ steps.terraform-output.outputs.cloudfront_distribution_id }}"
           echo "Dev Path UUID: ${{ steps.terraform-output.outputs.dev_path_uuid }}"
+          echo "Website URL: ${{ steps.terraform-output.outputs.website_url }}"
 
   build-and-deploy:
     name: 'Build and Deploy'
