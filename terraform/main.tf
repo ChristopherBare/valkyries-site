@@ -33,10 +33,10 @@ resource "aws_s3_bucket_ownership_controls" "website_bucket" {
 resource "aws_s3_bucket_public_access_block" "website_bucket" {
   bucket = aws_s3_bucket.website_bucket.id
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 # S3 bucket ACL
@@ -47,20 +47,13 @@ resource "aws_s3_bucket_acl" "website_bucket" {
   ]
 
   bucket = aws_s3_bucket.website_bucket.id
-  acl    = "public-read"
+  acl    = "private"
 }
 
-# S3 bucket website configuration
-resource "aws_s3_bucket_website_configuration" "website_bucket" {
-  bucket = aws_s3_bucket.website_bucket.id
 
-  index_document {
-    suffix = "index.html"
-  }
-
-  error_document {
-    key = "index.html"
-  }
+# CloudFront origin access identity
+resource "aws_cloudfront_origin_access_identity" "oai" {
+  comment = "OAI for Valkyries Site"
 }
 
 # S3 bucket policy
@@ -71,9 +64,11 @@ resource "aws_s3_bucket_policy" "website_bucket" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid       = "PublicReadGetObject"
+        Sid       = "CloudFrontReadGetObject"
         Effect    = "Allow"
-        Principal = "*"
+        Principal = {
+          AWS = "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${aws_cloudfront_origin_access_identity.oai.id}"
+        }
         Action    = "s3:GetObject"
         Resource  = "${aws_s3_bucket.website_bucket.arn}/*"
       }
@@ -84,14 +79,11 @@ resource "aws_s3_bucket_policy" "website_bucket" {
 # CloudFront distribution
 resource "aws_cloudfront_distribution" "website_distribution" {
   origin {
-    domain_name = aws_s3_bucket_website_configuration.website_bucket.website_endpoint
+    domain_name = aws_s3_bucket.website_bucket.bucket_regional_domain_name
     origin_id   = aws_s3_bucket.website_bucket.bucket
     
-    custom_origin_config {
-      http_port              = 80
-      https_port             = 443
-      origin_protocol_policy = "http-only"
-      origin_ssl_protocols   = ["TLSv1.2"]
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path
     }
   }
 
@@ -153,6 +145,13 @@ resource "aws_cloudfront_distribution" "website_distribution" {
   # Handle SPA routing by redirecting 404s to index.html
   custom_error_response {
     error_code         = 404
+    response_code      = 200
+    response_page_path = "/index.html"
+  }
+  
+  # Handle 403 errors (Forbidden) by redirecting to index.html
+  custom_error_response {
+    error_code         = 403
     response_code      = 200
     response_page_path = "/index.html"
   }
