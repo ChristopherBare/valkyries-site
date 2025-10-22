@@ -50,9 +50,12 @@ jobs:
         id: terraform-output
         run: |
           cd terraform
-          echo "bucket_name=$(terraform output -raw website_bucket_name)" >> $GITHUB_OUTPUT
-          echo "cloudfront_distribution_id=$(terraform output -raw cloudfront_distribution_id)" >> $GITHUB_OUTPUT
-          echo "dev_path_uuid=$(terraform output -raw dev_path_uuid)" >> $GITHUB_OUTPUT
+          {
+            echo "bucket_name=$(terraform output -raw website_bucket_name | tr -d '\r' | sed 's/%/%25/g; s/\n/%0A/g; s/\r/%0D/g')"
+            echo "cloudfront_distribution_id=$(terraform output -raw cloudfront_distribution_id | tr -d '\r' | sed 's/%/%25/g; s/\n/%0A/g; s/\r/%0D/g')"
+            echo "dev_path_uuid=$(terraform output -raw dev_path_uuid | tr -d '\r' | sed 's/%/%25/g; s/\n/%0A/g; s/\r/%0D/g')"
+          } >> "$GITHUB_OUTPUT"
+  
 
   build-and-deploy:
     name: 'Build and Deploy'
