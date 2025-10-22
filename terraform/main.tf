@@ -14,6 +14,11 @@ resource "aws_s3_bucket" "website_bucket" {
     Name        = "Valkyries Site Bucket"
     Environment = "Production"
   }
+  
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes = [bucket]
+  }
 }
 
 # S3 bucket ownership controls
