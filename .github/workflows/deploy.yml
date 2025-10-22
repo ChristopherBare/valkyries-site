@@ -22,7 +22,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.0.0
+          terraform_version: 1.9.5
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -34,63 +34,33 @@ jobs:
       - name: Terraform Init
         run: |
           cd terraform
-          terraform init
-
-      - name: Terraform Plan
-        run: |
-          cd terraform
-          terraform plan
+          terraform init -input=false
 
       - name: Terraform Apply
         run: |
           cd terraform
-          terraform apply -auto-approve
+          terraform apply -auto-approve -input=false
 
       - name: Terraform Output
         id: terraform-output
         run: |
           cd terraform
 
-          # Capture Terraform outputs cleanly
-          bucket_name=$(terraform output -raw website_bucket_name 2>/dev/null || echo "")
-          cloudfront_distribution_id=$(terraform output -raw cloudfront_distribution_id 2>/dev/null || echo "")
-          dev_path_uuid=$(terraform output -raw dev_path_uuid 2>/dev/null || echo "")
-
-          # Use jq to safely escape any special characters
-          bucket_name_escaped=$(jq -Rn --arg v "$bucket_name" '$v')
-          cloudfront_distribution_id_escaped=$(jq -Rn --arg v "$cloudfront_distribution_id" '$v')
-          dev_path_uuid_escaped=$(jq -Rn --arg v "$dev_path_uuid" '$v')
-
-          # Strip surrounding quotes from jq output (they're added for JSON safety)
-          bucket_name_escaped=${bucket_name_escaped#\"}
-          bucket_name_escaped=${bucket_name_escaped%\"}
-
-          cloudfront_distribution_id_escaped=${cloudfront_distribution_id_escaped#\"}
-          cloudfront_distribution_id_escaped=${cloudfront_distribution_id_escaped%\"}
-
-          dev_path_uuid_escaped=${dev_path_uuid_escaped#\"}
-          dev_path_uuid_escaped=${dev_path_uuid_escaped%\"}
-
-          # Append to GitHub Actions output file
-          {
-            echo "bucket_name=$bucket_name_escaped"
-            echo "cloudfront_distribution_id=$cloudfront_distribution_id_escaped"
-            echo "dev_path_uuid=$dev_path_uuid_escaped"
-          } >> "$GITHUB_OUTPUT"
-      
+          echo "bucket_name=$(terraform output -raw website_bucket_name)" >> $GITHUB_OUTPUT
+          echo "cloudfront_distribution_id=$(terraform output -raw cloudfront_distribution_id)" >> $GITHUB_OUTPUT
+          echo "dev_path_uuid=$(terraform output -raw dev_path_uuid)" >> $GITHUB_OUTPUT
 
       - name: Show Terraform Outputs
         run: |
           echo "Bucket: ${{ steps.terraform-output.outputs.bucket_name }}"
           echo "CloudFront ID: ${{ steps.terraform-output.outputs.cloudfront_distribution_id }}"
-        
-  
+          echo "Dev Path UUID: ${{ steps.terraform-output.outputs.dev_path_uuid }}"
 
   build-and-deploy:
     name: 'Build and Deploy'
     needs: terraform
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -117,19 +87,25 @@ jobs:
       - name: Deploy to S3 (Master Branch)
         if: github.ref == 'refs/heads/master'
         run: |
+          echo "Deploying to production bucket..."
           aws s3 sync build/ s3://${{ needs.terraform.outputs.bucket_name }}/ --delete
 
       - name: Deploy to S3 (Develop Branch)
         if: github.ref == 'refs/heads/develop'
         run: |
+          echo "Deploying to dev path..."
           aws s3 sync build/ s3://${{ needs.terraform.outputs.bucket_name }}/${{ needs.terraform.outputs.dev_path_uuid }}/dev/ --delete
 
       - name: Invalidate CloudFront Cache (Master Branch)
         if: github.ref == 'refs/heads/master'
         run: |
-          aws cloudfront create-invalidation --distribution-id ${{ needs.terraform.outputs.cloudfront_distribution_id }} --paths "/*"
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ needs.terraform.outputs.cloudfront_distribution_id }} \
+            --paths "/*"
 
       - name: Invalidate CloudFront Cache (Develop Branch)
         if: github.ref == 'refs/heads/develop'
         run: |
-          aws cloudfront create-invalidation --distribution-id ${{ needs.terraform.outputs.cloudfront_distribution_id }} --paths "/${{ needs.terraform.outputs.dev_path_uuid }}/dev/*"
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ needs.terraform.outputs.cloudfront_distribution_id }} \
+            --paths "/${{ needs.terraform.outputs.dev_path_uuid }}/dev/*"
