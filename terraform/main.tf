@@ -175,3 +175,12 @@ output "dev_path_uuid" {
   value = random_uuid.dev_path.result
   sensitive = true
 }
+
+terraform {
+  backend "s3" {
+    bucket = "valkyries-site-terraform-state"
+    key    = "site/terraform.tfstate"
+    region = "us-east-1"
+    dynamodb_table = "valkyries-site-terraform-lock"
+  }
+}
