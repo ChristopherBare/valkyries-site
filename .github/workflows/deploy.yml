@@ -13,8 +13,10 @@ jobs:
     outputs:
       bucket_name: ${{ steps.terraform-output.outputs.bucket_name }}
       cloudfront_distribution_id: ${{ steps.terraform-output.outputs.cloudfront_distribution_id }}
+      cloudfront_domain: ${{ steps.terraform-output.outputs.cloudfront_domain }}
       dev_path_uuid: ${{ steps.terraform-output.outputs.dev_path_uuid }}
       website_url: ${{ steps.terraform-output.outputs.website_url }}
+      custom_domains: ${{ steps.terraform-output.outputs.custom_domains }}
     
     steps:
       - name: Checkout Repository
@@ -41,7 +43,7 @@ jobs:
       - name: Terraform Apply
         run: |
           cd terraform
-          terraform apply -auto-approve -input=false
+          terraform apply -auto-approve -input=false -var="cloudflare_api_token=${{ secrets.CLOUDFLARE_API_TOKEN }}" -var="cloudflare_zone_id=${{ secrets.CLOUDFLARE_ZONE_ID }}"
 
       - name: Terraform Output
         id: terraform-output
@@ -50,20 +52,26 @@ jobs:
           
           BUCKET_NAME=$(terraform output -raw website_bucket_name)
           CLOUDFRONT_ID=$(terraform output -raw cloudfront_distribution_id)
+          CLOUDFRONT_DOMAIN=$(terraform output -raw cloudfront_distribution_domain)
           DEV_PATH_UUID=$(terraform output -raw dev_path_uuid)
-          WEBSITE_URL=$(terraform output -raw website_url)
+          WEBSITE_URL=$(terraform output -raw website_url_cloudfront_domain)
+          CUSTOM_DOMAINS=$(terraform output -json custom_domains)
           
           echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
           echo "cloudfront_distribution_id=$CLOUDFRONT_ID" >> $GITHUB_OUTPUT
+          echo "cloudfront_domain=$CLOUDFRONT_DOMAIN" >> $GITHUB_OUTPUT
           echo "dev_path_uuid=$DEV_PATH_UUID" >> $GITHUB_OUTPUT
           echo "website_url=$WEBSITE_URL" >> $GITHUB_OUTPUT
+          echo "custom_domains=$CUSTOM_DOMAINS" >> $GITHUB_OUTPUT
 
       - name: Show Terraform Outputs
         run: |
           echo "Bucket: ${{ steps.terraform-output.outputs.bucket_name }}"
           echo "CloudFront ID: ${{ steps.terraform-output.outputs.cloudfront_distribution_id }}"
+          echo "CloudFront Domain: ${{ steps.terraform-output.outputs.cloudfront_domain }}"
           echo "Dev Path UUID: ${{ steps.terraform-output.outputs.dev_path_uuid }}"
           echo "Website URL: ${{ steps.terraform-output.outputs.website_url }}"
+          echo "Custom Domains: ${{ steps.terraform-output.outputs.custom_domains }}"
 
   build-and-deploy:
     name: 'Build and Deploy'
