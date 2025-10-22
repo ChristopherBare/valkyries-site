@@ -2,6 +2,19 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Features
+
+The Valkyries team website includes the following features:
+
+- **Team Roster**: Display of team members with their positions and photos
+- **Coaching Staff**: Information about the coaching staff
+- **Team Calendar**: Interactive calendar showing upcoming games, practices, and events
+  - Month view and list view options
+  - Pulls events directly from the team's Google Calendar
+  - Highlights today's events
+  - Shows event details including location and description
+- **Social Media Links**: Links to the team's social media accounts
+
 ## CI/CD and Infrastructure
 
 This project includes a complete CI/CD pipeline and infrastructure setup using GitHub Actions, Terraform, AWS S3, and CloudFront.
@@ -31,12 +44,17 @@ To use the CI/CD pipeline, you need to set up the following GitHub secrets:
 
 - `AWS_ACCESS_KEY_ID`: Your AWS access key with appropriate permissions
 - `AWS_SECRET_ACCESS_KEY`: Your AWS secret key
+- `GOOGLE_CALENDAR_API_KEY`: Google Calendar API key for the team calendar
+- `GOOGLE_CALENDAR_ID`: ID of the Google Calendar to display team events
+- `GOOGLE_CLIENT_ID`: OAuth 2.0 Client ID for Google Calendar integration
 
 The AWS user should have permissions for:
 - S3 (read/write)
 - CloudFront (create invalidations)
 - IAM (if you want GitHub Actions to create/update resources)
 - Other AWS services used by Terraform
+
+For detailed instructions on setting up the Google Calendar integration, see [GOOGLE_CALENDAR_SETUP.md](GOOGLE_CALENDAR_SETUP.md).
 
 ## Available Scripts
 

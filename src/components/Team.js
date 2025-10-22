@@ -3,18 +3,18 @@ import './Team.css';
 
 const Team = () => {
     const playersData = [
-        { id: 1, name: 'Olivia', birthday: '2015-06-12', position: 'Pitcher' },
-        { id: 2, name: 'Aurora', birthday:'2015-02-06', position: 'Catcher', focus: 'top' }, //focus is optional so that you can tweak the image position
-        { id: 3, name: 'Jocelynn', birthday: '2015-02-28', position: '1st Base' },
-        { id: 4, name: 'Isabella', birthday: '2015-06-12', position: '2nd Base' },
-        { id: 5, name: 'Sophia', birthday: '2015-06-12', position: 'Shortstop' },
-        { id: 6, name: 'Mia', birthday: '2015-06-12', position: '3rd Base' },
-        { id: 7, name: 'Charlotte', birthday: '2015-06-12', position: 'Left Field' },
-        { id: 8, name: 'Amelia', birthday: '2015-06-12', position: 'Center Field' },
-        { id: 9, name: 'Harper', birthday: '2015-06-12', position: 'Right Field' },
-        { id: 10, name: 'Evelyn', birthday: '2015-06-12', position: 'Utility' },
-        { id: 11, name: 'Abigail', birthday: '2015-06-12', position: 'Pitcher/Infield' },
-        { id: 12, name: 'Emily', birthday: '2015-06-12', position: 'Outfield/Catcher' }
+        { id: 1, name: 'TBD', birthday: '2015-06-12', position: 'Pitcher' },
+        { id: 2, name: 'Aurora', birthday:'2015-02-06', position: 'Catcher | Utility', focus: 'top' }, //focus is optional so that you can tweak the image position
+        { id: 3, name: 'Jocelynn', birthday: '2015-02-28', position: '1st Base | Utility' },
+        { id: 4, name: 'TBD', birthday: '2015-06-12', position: '2nd Base' },
+        { id: 5, name: 'TBD', birthday: '2015-06-12', position: 'Shortstop' },
+        { id: 6, name: 'TBD', birthday: '2015-06-12', position: '3rd Base' },
+        { id: 7, name: 'TBD', birthday: '2015-06-12', position: 'Left Field' },
+        { id: 8, name: 'TBD', birthday: '2015-06-12', position: 'Center Field' },
+        { id: 9, name: 'TBD', birthday: '2015-06-12', position: 'Right Field' },
+        { id: 10, name: 'TBD', birthday: '2015-06-12', position: 'Utility' },
+        { id: 11, name: 'TBD', birthday: '2015-06-12', position: 'Pitcher/Infield' },
+        { id: 12, name: 'TBD', birthday: '2015-06-12', position: 'Outfield/Catcher' }
     ];
 
     // Helper function to create a public image URL based on the player's name
