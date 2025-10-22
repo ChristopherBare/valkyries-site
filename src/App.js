@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import Coaches from './components/Coaches';
 import About from './components/About';
 import Team from './components/Team';
+import TeamCalendar from './components/Calendar';
 import SocialLinks from './components/SocialLinks';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <About />
       <Coaches />
       <Team />
+      <TeamCalendar />
       <SocialLinks />
     </div>
   );

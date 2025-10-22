@@ -1,0 +1,231 @@
+.calendar {
+    padding: 5rem 0;
+    /*background: var(--white);*/
+    margin-bottom: 3rem; /* 👈 adds space below the entire calendar section */
+}
+.fc .fc-toolbar-title {
+    color: var(--dark-text);
+    font-weight: 700;
+}
+
+.fc .fc-button {
+    background: var(--light-blue);
+    border: none;
+    color: var(--white);
+    text-transform: capitalize;
+}
+.fc .fc-button:hover {
+    filter: brightness(0.95);
+}
+.fc .fc-button:disabled {
+    opacity: 0.6;
+}
+
+.fc .fc-daygrid-day.fc-day-today,
+.fc .fc-timegrid-col.fc-day-today {
+    background: rgba(255, 215, 0, 0.12); /* gold tint for today */
+}
+
+.fc .fc-event,
+.fc .fc-list-event {
+    border-radius: 6px;
+    border: 1px solid var(--light-blue);
+    background: var(--sky-blue);
+    color: var(--dark-text);
+    padding: 2px 4px;
+}
+
+/* Simple modal styles */
+.event-dialog {
+    width: min(720px, 92vw);
+    border: none;
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+.event-dialog::backdrop {
+    background: rgba(0,0,0,.35);
+}
+.event-dialog__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--light-blue);
+    color: var(--white);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+.event-dialog__body {
+    padding: 16px 20px;
+    background: var(--off-white);
+}
+.event-dialog__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--off-white);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+.event-dialog__close {
+    background: transparent;
+    border: none;
+    color: var(--white);
+    font-size: 20px;
+    cursor: pointer;
+}
+.event-dialog__btn,
+.event-dialog__link {
+    background: var(--light-blue);
+    color: var(--white);
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.event-dialog__btn:hover,
+.event-dialog__link:hover {
+    filter: brightness(0.95);
+}
+.event-dialog__time,
+.event-dialog__loc {
+    margin: 0 0 8px;
+}
+.event-dialog__desc p {
+    margin: 6px 0 0;
+    white-space: pre-wrap;
+}
+/* Full-screen overlay on top of everything */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: grid;
+    place-items: center;
+    z-index: 10000; /* higher than any site header/footer/calendar */
+}
+
+/* Card */
+.modal-card {
+    width: min(720px, 92vw);
+    background: var(--off-white, #fff);
+    color: var(--dark-text, #222);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    overflow: hidden;
+}
+
+/* Header */
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--light-blue, #5ab5e6);
+    color: var(--white, #fff);
+    padding: 14px 18px;
+}
+.modal-close {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Body + footer */
+.modal-body { padding: 16px 18px; }
+.modal-footer {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    padding: 12px 18px;
+    background: var(--off-white, #fff);
+    border-top: 1px solid rgba(0,0,0,.06);
+}
+.modal-row { margin: 0 0 8px; }
+.modal-desc p { margin: 6px 0 0; white-space: pre-wrap; }
+.modal-btn {
+    background: var(--light-blue, #5ab5e6);
+    color: var(--white, #fff);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.modal-btn:hover { filter: brightness(0.95); }
+
+/* Overlay */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: grid;
+    place-items: center;
+    z-index: 10000;
+
+    /* hidden by default; turn on via .is-open */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 180ms ease-out, visibility 0ms linear 180ms;
+
+    /* prevent background flash */
+    will-change: opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+.modal-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 180ms ease-out;
+}
+
+/* Card */
+.modal-card {
+    width: min(720px, 92vw);
+    background: var(--off-white, #fff);
+    color: var(--dark-text, #222);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    overflow: hidden;
+
+    /* subtle pop-in */
+    transform: translateY(4px) scale(0.985);
+    opacity: 0;
+    transition: opacity 200ms cubic-bezier(.2,.8,.2,1),
+    transform 200ms cubic-bezier(.2,.8,.2,1)  ;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+.modal-card.is-open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Header / body / footer (same as before) */
+.modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--light-blue, #5ab5e6); color: var(--white, #fff);
+    padding: 14px 18px;
+}
+.modal-close { background: none; border: none; color: inherit; font-size: 20px; cursor: pointer; }
+.modal-body { padding: 16px 18px; }
+.modal-footer { display: flex; gap: 10px; justify-content: flex-end; padding: 12px 18px; border-top: 1px solid rgba(0,0,0,.06); }
+.modal-row { margin: 0 0 8px; }
+.modal-desc p { margin: 6px 0 0; white-space: pre-wrap; }
+.modal-btn { background: var(--light-blue, #5ab5e6); color: #fff; border: none; border-radius: 8px; padding: 8px 12px; text-decoration: none; cursor: pointer; }
+.modal-btn:hover { filter: brightness(0.95); }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .modal-overlay,
+    .modal-card {
+        transition: none;
+        opacity: 1;
+        transform: none;
+        visibility: visible;
+    }
+}
