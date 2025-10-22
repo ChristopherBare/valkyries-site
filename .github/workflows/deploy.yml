@@ -45,10 +45,14 @@ jobs:
         id: terraform-output
         run: |
           cd terraform
-
-          echo "bucket_name=$(terraform output -raw website_bucket_name)" >> $GITHUB_OUTPUT
-          echo "cloudfront_distribution_id=$(terraform output -raw cloudfront_distribution_id)" >> $GITHUB_OUTPUT
-          echo "dev_path_uuid=$(terraform output -raw dev_path_uuid)" >> $GITHUB_OUTPUT
+          
+          BUCKET_NAME=$(terraform output -raw website_bucket_name)
+          CLOUDFRONT_ID=$(terraform output -raw cloudfront_distribution_id)
+          DEV_PATH_UUID=$(terraform output -raw dev_path_uuid)
+          
+          echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
+          echo "cloudfront_distribution_id=$CLOUDFRONT_ID" >> $GITHUB_OUTPUT
+          echo "dev_path_uuid=$DEV_PATH_UUID" >> $GITHUB_OUTPUT
 
       - name: Show Terraform Outputs
         run: |
