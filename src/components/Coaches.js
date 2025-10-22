@@ -16,7 +16,8 @@ const Coaches = () => {
             name: 'Coach Tiana',
             role: 'Assistant Coach',
             bio: 'Pitching specialist with 8 years of experience developing young talent. Focuses on proper mechanics and mental game.',
-            imageUrl: '/images/coaches/Tiana.jpg' // This one assumes coach2.jpg is in `public/images/`
+            imageUrl: '/images/coaches/Tiana.jpg',
+            focus: 'bottom'
         },
         {
             id: 3,
