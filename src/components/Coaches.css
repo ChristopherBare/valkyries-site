@@ -1,103 +1,124 @@
+/* ===== Coaches Section ===== */
 .coaches {
-  padding: 5rem 0;
-  background: var(--sky-blue);
+    padding: 5rem 0;
+    background: var(--sky-blue);
+    margin-bottom: 4rem; /* space below section so next block isn't cramped */
 }
 
+/* Responsive grid: wide cards, even spacing */
 .coaches-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* adjust 320px if you want wider/narrower min cards */
+    gap: 2rem;
+    margin-top: 3rem;
+    align-items: stretch; /* keeps rows uniform even if content differs */
 }
 
+/* Card */
 .coach-card {
-  background: var(--white);
-  border-radius: 10px;
-  box-shadow: 0 5px 15px var(--shadow);
-  overflow: hidden;
-  width: 300px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 5px 15px var(--shadow);
+    overflow: hidden;
+    /* let grid control width (remove fixed width) */
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .coach-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* Image area: consistent, responsive height via aspect-ratio */
 .coach-image-container {
-  height: 200px;
-  overflow: hidden;
-  background: var(--light-blue);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--light-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+/* Actual image fills container cleanly */
 .coach-image {
     width: 100%;
-    height: 300px;
+    height: 100%;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 0; /* container already has rounding */
     transition: transform 0.3s ease;
 }
+.coach-image:hover { transform: scale(1.05); }
 
-.coach-image:hover {
-    transform: scale(1.05);
-}
-
+/* Placeholder for missing images */
 .coach-image-placeholder {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background: var(--white);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 3px solid var(--gold);
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid var(--gold);
 }
 
 .coach-initials {
-  font-size: 3rem;
-  font-weight: bold;
-  color: var(--light-blue);
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--light-blue);
 }
 
+/* Card content */
 .coach-info {
-  padding: 1.5rem;
+    padding: 1.25rem 1.5rem 1.5rem;
+    color: var(--dark-text);
+    flex: 1; /* pushes footer content if you add actions later */
 }
 
 .coach-info h3 {
-  color: var(--dark-text);
-  margin-bottom: 0.5rem;
+    color: var(--dark-text);
+    margin-bottom: 0.5rem;
 }
 
 .coach-info h4 {
-  color: var(--light-blue);
-  font-weight: 500;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
+    color: var(--light-blue);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
 }
 
 .coach-info p {
-  color: var(--dark-text);
-  font-size: 0.95rem;
-  line-height: 1.6;
+    color: var(--dark-text);
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
+/* ===== Responsive Tweaks ===== */
 @media (max-width: 992px) {
-  .coaches-container {
-    gap: 1.5rem;
-  }
+    .coaches-container { gap: 1.5rem; }
 }
 
 @media (max-width: 768px) {
-  .coaches {
-    padding: 3rem 0;
+    .coaches { padding: 3rem 0; }
+    /* grid naturally drops to 2 or 1 columns based on available width */
+}
+
+/* Optional: horizontal scrolling "inline" cards on very small phones */
+/* Uncomment if you prefer swipeable single-row layout under ~520px */
+/*
+@media (max-width: 520px) {
+  .coaches-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: .5rem;
+    scroll-snap-type: x mandatory;
   }
-  
   .coach-card {
-    width: 100%;
-    max-width: 350px;
+    flex: 0 0 85%;   // wide card that feels inline
+    scroll-snap-align: start;
   }
 }
+*/

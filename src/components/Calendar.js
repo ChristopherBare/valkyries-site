@@ -9,18 +9,31 @@ import interactionPlugin from '@fullcalendar/interaction';
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
 import './Calendar.css';
 
+/* -------- helpers -------- */
+const MOBILE_BREAKPOINT = 520; // px — tweak to taste
+
+function useIsMobile(breakpoint = MOBILE_BREAKPOINT) {
+    const [isMobile, setIsMobile] = useState(
+        typeof window !== 'undefined' ? window.innerWidth <= breakpoint : false
+    );
+    useEffect(() => {
+        const onResize = () => setIsMobile(window.innerWidth <= breakpoint);
+        window.addEventListener('resize', onResize, { passive: true });
+        return () => window.removeEventListener('resize', onResize);
+    }, [breakpoint]);
+    return isMobile;
+}
+
 /* -------- Modal rendered via portal -------- */
 function EventModal({ open, onClose, event }) {
-    // local flag to trigger the CSS transition after mount
     const [visible, setVisible] = useState(false);
 
-    // Lock scroll (one-frame delayed to avoid background flash/reflow)
     useEffect(() => {
         if (!open) return;
         const prevOverflow = document.body.style.overflow;
         const raf = requestAnimationFrame(() => {
             document.body.style.overflow = 'hidden';
-            setVisible(true); // trigger fade-in AFTER we're in the DOM
+            setVisible(true);
         });
         return () => {
             cancelAnimationFrame(raf);
@@ -29,7 +42,6 @@ function EventModal({ open, onClose, event }) {
         };
     }, [open]);
 
-    // Close on Esc
     useEffect(() => {
         if (!open) return;
         const onKey = (e) => e.key === 'Escape' && onClose?.();
@@ -57,12 +69,7 @@ function EventModal({ open, onClose, event }) {
             >
                 <div className="modal-header">
                     <h3>{title}</h3>
-                    <button
-                        className="modal-close"
-                        onClick={onClose}
-                        aria-label="Close"
-                        type="button"
-                    >
+                    <button className="modal-close" onClick={onClose} aria-label="Close" type="button">
                         ✕
                     </button>
                 </div>
@@ -71,9 +78,7 @@ function EventModal({ open, onClose, event }) {
                     <p className="modal-row">
                         <strong>When:</strong> {startStr}{endStr ? ` – ${endStr}` : ''}
                     </p>
-                    {location && (
-                        <p className="modal-row"><strong>Where:</strong> {location}</p>
-                    )}
+                    {location && <p className="modal-row"><strong>Where:</strong> {location}</p>}
                     {description && (
                         <div className="modal-desc">
                             <strong>Details:</strong>
@@ -84,12 +89,7 @@ function EventModal({ open, onClose, event }) {
 
                 <div className="modal-footer">
                     {url && (
-                        <a
-                            className="modal-btn"
-                            href={url}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
+                        <a className="modal-btn" href={url} target="_blank" rel="noreferrer">
                             Open in Google Calendar
                         </a>
                     )}
@@ -102,11 +102,33 @@ function EventModal({ open, onClose, event }) {
 
 export default function TeamCalendar() {
     const calendarRef = useRef(null);
+    const isMobile = useIsMobile();
+
     const [dialogOpen, setDialogOpen] = useState(false);
     const [clickedEvent, setClickedEvent] = useState(null);
 
     const apiKey = process.env.REACT_APP_GOOGLE_CALENDAR_API_KEY;
     const calendarId = process.env.REACT_APP_GOOGLE_CALENDAR_ID || 'primary';
+
+    // Choose view + toolbar + button text based on screen size
+    const initialView = isMobile ? 'listMonth' : 'dayGridMonth';
+    const headerToolbar = isMobile
+        ? { left: 'prev,next', center: 'title', right: 'listMonth' }
+        : { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth' };
+
+    const buttonText = isMobile
+        ? { today: 'Today', dayGridMonth: 'Mon', timeGridWeek: 'Wk', timeGridDay: 'Day', listMonth: 'List' }
+        : { today: 'Today', dayGridMonth: 'Month', timeGridWeek: 'Week', timeGridDay: 'Day', listMonth: 'List' };
+
+    // Keep view in sync when resizing across the breakpoint
+    useEffect(() => {
+        const api = calendarRef.current?.getApi?.();
+        if (!api) return;
+        const target = isMobile ? 'listMonth' : 'dayGridMonth';
+        if (api.view?.type !== target) {
+            api.changeView(target);
+        }
+    }, [isMobile]);
 
     const handleEventClick = (info) => {
         info.jsEvent.preventDefault();
@@ -136,21 +158,18 @@ export default function TeamCalendar() {
                 <FullCalendar
                     ref={calendarRef}
                     plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, googleCalendarPlugin]}
-                    initialView="dayGridMonth"
-                    headerToolbar={{
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-                    }}
+                    initialView={initialView}
+                    headerToolbar={headerToolbar}
+                    buttonText={buttonText}
                     height="auto"
                     expandRows
+                    dayMaxEvents={isMobile ? false : 3}   // no "+more" bubble on tiny screens
                     googleCalendarApiKey={apiKey}
                     events={{ googleCalendarId: calendarId }}
                     eventClick={handleEventClick}
                     navLinks
                     editable={false}
                     selectable={false}
-                    dayMaxEvents={3}
                     eventTimeFormat={{ hour: 'numeric', minute: '2-digit', meridiem: 'short' }}
                 />
 

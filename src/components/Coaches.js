@@ -5,15 +5,16 @@ const Coaches = () => {
     const coachesData = [
         {
             id: 1,
-            name: 'Coach Jessica Bare',
+            name: 'Jessica Bare',
             role: 'Head Coach',
-            bio: 'Former collegiate player with 10+ years of coaching experience. Specializes in hitting and infield defense.',
+            bio: 'Jessica brings a lifelong love of softball and years of experience both on and off the field. A former high school standout who excelled as a catcher and outfielder, Jessica combines her technical knowledge with a deep passion for player development. She began coaching at the local recreational level, where her leadership and ability to connect with young athletes quickly stood out. Her dedication and expertise led to her being recruited as a catching coach—an area where her experience truly shines.\n' +
+               'Her coaching philosophy centers on effort, respect, and a genuine love for the sport of softball.',
             imageUrl: '/images/coaches/Jessica.jpg',
             focus: 'top'
         },
         {
             id: 2,
-            name: 'Coach Tiana',
+            name: 'Tiana Newell',
             role: 'Assistant Coach',
             bio: 'Pitching specialist with 8 years of experience developing young talent. Focuses on proper mechanics and mental game.',
             imageUrl: '/images/coaches/Tiana.jpg',
@@ -21,7 +22,7 @@ const Coaches = () => {
         },
         {
             id: 3,
-            name: 'Coach Katie',
+            name: 'Katie Comier',
             role: 'Assistant Coach',
             bio: 'Former Division I outfielder. Teaches speed, agility, and outfield skills. Certified strength and conditioning specialist.',
             imageUrl: '/images/coaches/Katie.jpg'
