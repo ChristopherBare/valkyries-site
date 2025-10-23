@@ -16,7 +16,7 @@ const Coaches = () => {
             id: 2,
             name: 'Tiana Newell',
             role: 'Assistant Coach',
-            bio: 'Pitching specialist with 8 years of experience developing young talent. Focuses on proper mechanics and mental game.',
+            bio: 'Bio coming soon...',
             imageUrl: '/images/coaches/Tiana.jpg',
             focus: 'bottom'
         },
@@ -24,7 +24,7 @@ const Coaches = () => {
             id: 3,
             name: 'Katie Comier',
             role: 'Assistant Coach',
-            bio: 'Former Division I outfielder. Teaches speed, agility, and outfield skills. Certified strength and conditioning specialist.',
+            bio: 'Bio coming soon...',
             imageUrl: '/images/coaches/Katie.jpg'
         }
     ];
