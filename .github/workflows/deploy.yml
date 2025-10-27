@@ -149,3 +149,64 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id ${{ needs.terraform.outputs.cloudfront_distribution_id }} \
             --paths "/${{ needs.terraform.outputs.dev_path_uuid }}/dev/*"
+
+      - name: Post Deploy Summary (Develop)
+        if: github.ref == 'refs/heads/develop'
+        shell: bash
+        run: |
+          # Ensure jq is available (usually preinstalled on ubuntu-latest)
+          command -v jq >/dev/null 2>&1 || { sudo apt-get update -y && sudo apt-get install -y jq; }
+
+          RAW_CUSTOM='${{ needs.terraform.outputs.custom_domains }}'
+          PRIMARY_DOMAIN=$(echo "$RAW_CUSTOM" | jq -r '.[0] // empty')
+
+          # Fallback to CloudFront domain when no custom domain is configured
+          if [[ -z "$PRIMARY_DOMAIN" || "$PRIMARY_DOMAIN" == "null" ]]; then
+            PRIMARY_DOMAIN='${{ needs.terraform.outputs.cloudfront_domain }}'
+          fi
+
+          DEV_UUID='${{ needs.terraform.outputs.dev_path_uuid }}'
+          BASE_URL="https://${PRIMARY_DOMAIN}/${DEV_UUID}/dev"
+
+          echo "::notice title=Dev Preview URL::${BASE_URL}/"
+          echo "::notice title=Dev Index URL::${BASE_URL}/index.html"
+
+          {
+            echo "## 🚀 Develop Deployment"
+            echo ""
+            echo "**Bucket**: \`${{ needs.terraform.outputs.bucket_name }}\`"
+            echo "**Prefix**: \`${DEV_UUID}/dev/\`"
+            echo ""
+            echo "**Preview Root:** ${BASE_URL}/"
+            echo "**Index:** ${BASE_URL}/index.html"
+            echo ""
+            echo "> CloudFront Distribution: \`${{ needs.terraform.outputs.cloudfront_distribution_id }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post Deploy Summary (Master)
+        if: github.ref == 'refs/heads/master'
+        shell: bash
+        run: |
+          # Ensure jq is available (usually preinstalled on ubuntu-latest)
+          command -v jq >/dev/null 2>&1 || { sudo apt-get update -y && sudo apt-get install -y jq; }
+
+          RAW_CUSTOM='${{ needs.terraform.outputs.custom_domains }}'
+          PRIMARY_DOMAIN=$(echo "$RAW_CUSTOM" | jq -r '.[0] // empty')
+
+          # Fallback to CloudFront domain when no custom domain is configured
+          if [[ -z "$PRIMARY_DOMAIN" || "$PRIMARY_DOMAIN" == "null" ]]; then
+            PRIMARY_DOMAIN='${{ needs.terraform.outputs.cloudfront_domain }}'
+          fi
+
+          PROD_URL="https://${PRIMARY_DOMAIN}/"
+
+          echo "::notice title=Production URL::${PROD_URL}"
+
+          {
+            echo "## ✅ Production Deployment"
+            echo ""
+            echo "**Bucket**: \`${{ needs.terraform.outputs.bucket_name }}\`"
+            echo "**Root:** ${PROD_URL}"
+            echo ""
+            echo "> CloudFront Distribution: \`${{ needs.terraform.outputs.cloudfront_distribution_id }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
