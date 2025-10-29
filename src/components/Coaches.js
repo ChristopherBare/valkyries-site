@@ -16,7 +16,7 @@ const Coaches = () => {
             id: 2,
             name: 'Tiana Newell',
             role: 'Assistant Coach',
-            bio: 'Bio coming soon...',
+            bio: 'Coach Tiana is a multi-sport athlete (water polo, volleyball, basketball, and adult rec softball) who brings a teamwork-first mindset to coaching. A nurse by day, she builds skill and confidence while teaching athletes to rely on one another and be great teammates. Fun facts: she’s bounced between CA and NC five times, met Coach Katie in 2009, always has the best first-aid kit—and agrees snacks are the real MVP.\n',
             imageUrl: '/images/coaches/Tiana.jpg',
             focus: 'bottom'
         },
