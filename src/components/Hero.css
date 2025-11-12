@@ -53,6 +53,40 @@
     color: hsl(51, 100%, 50%);
 }
 
+.softball-emoji {
+  font-size: 2rem;
+  vertical-align: middle;
+  position: relative;
+  top: -0.1em;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--white);
+  z-index: 2;
+  animation: fadeInUp 0.8s ease-out 1s backwards;
+}
+
+.scroll-arrow {
+  font-size: 2rem;
+  animation: bounce 2s infinite;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-text {
+  font-size: 0.9rem;
+  margin-top: 5px;
+  font-weight: 300;
+  color: var(--white);
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -80,5 +114,18 @@
   
   .team-tagline {
     font-size: 1.25rem;
+  }
+  
+  .softball-emoji {
+    font-size: 1.5rem;
+    top: -0.05em;
+  }
+  
+  .scroll-arrow {
+    font-size: 1.75rem;
+  }
+  
+  .scroll-text {
+    font-size: 0.8rem;
   }
 }

@@ -8,7 +8,7 @@ const SocialLinks = () => {
         { id: 1, name: 'Facebook', url: 'https://www.facebook.com/share/19sat4PmEM/', icon: <Facebook /> },
         { id: 2, name: 'Instagram', url: 'https://instagram.com/ncvalkyries', icon: <Instagram /> },
         { id: 3, name: 'Twitter', url: 'https://twitter.com/ncvalkyries', icon: <BsTwitterX className="twitter-icon" color={"white"}/>},
-        { id: 4, name: 'YouTube', url: 'https://youtube.com/ncvalkyries', icon: <Youtube /> },
+        { id: 4, name: 'YouTube', url: 'https://www.youtube.com/channel/UCH7hjFWmhnDofDMyO7-8lHw', icon: <Youtube /> },
     ];
 
     return (
