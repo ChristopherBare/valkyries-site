@@ -4,19 +4,13 @@ import React, {useMemo, useState} from 'react';
 const defaultSponsors = [
     {
         id: 'acme',
-        name: 'ACME Corp',
-        logo: process.env.PUBLIC_URL + 'images/sponsors/acme.webp',
+        name: 'Hoffman Orthodontics',
+        logo: process.env.PUBLIC_URL + 'images/sponsors/hoffman-horizontal.svg',
         blurb: 'Proud supporters of NC Valkyries Fastpitch Softball.',
-        url: 'https://example.com',
-        location: "San Francisco, CA",
-        contact: "(123) 456-7890",
-    }, {
-        id: 'acme',
-        name: 'ACME Corp',
-        logo: process.env.PUBLIC_URL + 'images/sponsors/acme.webp',
-        blurb: 'Proud supporters of NC Valkyries Fastpitch Softball.',
-        url: 'https://example.com'
-    }
+        url: 'https://hoffman-ortho.com',
+        location: "279 Williamson Rd F, Mooresville, NC 28117",
+        contact: "(704) 997-3919",
+    },
 ];
 
 const AccordionItem = ({title, isOpen, onToggle, children}) => (
@@ -189,7 +183,7 @@ const Drawer = ({open, onClose, children}) => {
 const SponsorProfileCard = ({ sponsor }) => {
     if (!sponsor) return null;
 
-    const { name, logo, blurb, url, location } = sponsor;
+    const { name, logo, blurb, url, location, contact } = sponsor;
 
     return (
         <div className="w-full max-w-3xl mx-auto text-slate-900">
@@ -284,6 +278,18 @@ const SponsorProfileCard = ({ sponsor }) => {
                         </p>
                     </div>
                 )}
+
+                {/* Contact */}
+                {contact && (
+                    <div className="border-t border-sky-100 pt-4">
+                        <h4 className="text-sm font-semibold text-slate-800">
+                            Contact
+                        </h4>
+                        <p className="mt-1 text-sm text-slate-700">
+                            {contact}
+                        </p>
+                    </div>
+                )}
             </section>
         </div>
     );
@@ -305,20 +311,20 @@ const Sponsors = ({sponsors}) => {
             <div className="container mx-auto px-4">
                 <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">Our Team Sponsors</h2>
 
-                {/* Logo grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 md:gap-8">
+                {/* Logo area – large circular avatars, centered layout */}
+                <div className="flex flex-wrap justify-center gap-6 md:gap-8">
                     {data.map((s) => (
                         <button
                             key={s.id}
                             type="button"
                             onClick={() => setActiveSponsor(s)}
-                            className="group border rounded-xl p-4 flex items-center justify-center hover:bg-blue-50 transition"
+                            className="group w-56 h-56 md:w-72 md:h-72 rounded-full bg-white border shadow-sm flex items-center justify-center hover:shadow-md hover:bg-blue-50/40 transition"
                             aria-label={`Open profile for ${s.name}`}
                         >
                             <img
                                 src={s.logo}
                                 alt={s.name}
-                                className="h-16 md:h-24 object-contain opacity-90 group-hover:opacity-100"
+                                className="max-w-[70%] max-h-[70%] object-contain opacity-90 group-hover:opacity-100"
                             />
                         </button>
                     ))}
