@@ -295,7 +295,7 @@ const Sponsors = ({sponsors}) => {
     const data = useMemo(() => sponsors && sponsors.length ? sponsors : defaultSponsors, [sponsors]);
     const [activeSponsor, setActiveSponsor] = useState(null);
     const [paymentOpen, setPaymentOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState('stripe');
+    const [activeTab] = useState('stripe');
     const [openAccordions, setOpenAccordions] = useState({venmo: false, cash: false});
 
     const stripePaymentLink = process.env.REACT_APP_STRIPE_PAYMENT_LINK || '';
