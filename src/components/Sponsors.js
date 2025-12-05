@@ -424,7 +424,7 @@ const Sponsors = ({sponsors}) => {
                     {activeTab === 'venmo' && (
                         <div className="flex items-center justify-center">
                             <img
-                                src={process.env.PUBLIC_URL + '/venmo-qr.svg'}
+                                src={process.env.PUBLIC_URL + '/venmo.jpg'}
                                 alt="Venmo QR"
                                 className="w-64 h-64 object-contain border rounded"
                             />
