@@ -5,7 +5,7 @@ const defaultSponsors = [
     {
         id: 'acme',
         name: 'Hoffman Orthodontics',
-        logo: process.env.PUBLIC_URL + 'images/sponsors/hoffman-horizontal.svg',
+        logo: process.env.PUBLIC_URL + '/images/sponsors/hoffman-horizontal.svg',
         blurb: 'Proud supporters of NC Valkyries Fastpitch Softball.',
         url: 'https://hoffman-ortho.com',
         location: "279 Williamson Rd F, Mooresville, NC 28117",
