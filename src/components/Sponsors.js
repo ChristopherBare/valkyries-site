@@ -1,4 +1,5 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import { createPortal } from 'react-dom';
 
 // Simple in-file data model; replace with real sponsors/logos as needed
 const defaultSponsors = [
@@ -47,6 +48,198 @@ const Modal = ({open, onClose, children}) => {
                 </button>
                 <div className="p-6">{children}</div>
             </div>
+        </div>
+    );
+};
+
+// Lightweight portal container to render dropdown menus outside of modal overflow
+const PortalMenu = ({ anchorRect, children, menuRef }) => {
+    if (!anchorRect) return null;
+    const style = {
+        position: 'fixed',
+        top: Math.round(anchorRect.bottom + 4),
+        // Left-justify the menu to align with the chevron's left edge
+        left: Math.round(anchorRect.left),
+        zIndex: 9999
+    };
+    return createPortal(
+        <div ref={menuRef} style={style}>
+            {children}
+        </div>,
+        document.body
+    );
+};
+
+// Reusable split button: primary action on the left; right-side arrow shows a dropdown
+// Supports optional menuItems for multi-option menus (e.g., tiered donations)
+// Props:
+// - label: string (button text)
+// - href: string (primary left-button href; kept for backward compatibility)
+// - primaryHref: string (preferred primary href when provided)
+// - menuItems: array of { label: string, description?: string, href: string }
+// - className: string
+// - menuAnchor: 'chevron' | 'wrapper' (controls where the dropdown aligns; default 'chevron')
+// - primaryOpensMenu: boolean (when true, the left side toggles the dropdown instead of navigating)
+const SplitLinkButton = ({ href, primaryHref, label, menuItems = null, className = '', menuAnchor = 'chevron', primaryOpensMenu = false }) => {
+    const lightBlueStyle = { backgroundColor: 'var(--light-blue)' };
+    const [menuOpen, setMenuOpen] = useState(false);
+    const wrapperRef = useRef(null);
+    const menuButtonRef = useRef(null);
+    const menuContentRef = useRef(null);
+    const [menuRect, setMenuRect] = useState(null);
+
+    const resolvedPrimaryHref = primaryHref || href || (Array.isArray(menuItems) && menuItems.length > 0 ? menuItems[0].href : '');
+
+    const onPrimaryClick = (e) => {
+        if (primaryOpensMenu) {
+            e && e.stopPropagation && e.stopPropagation();
+            setMenuOpen((v) => {
+                const next = !v;
+                if (!v) {
+                    const node = (menuAnchor === 'wrapper' ? wrapperRef.current : menuButtonRef.current);
+                    if (node) setMenuRect(node.getBoundingClientRect());
+                }
+                return next;
+            });
+            return;
+        }
+        if (!resolvedPrimaryHref) return;
+        window.location.href = resolvedPrimaryHref;
+    };
+
+    const onSelectItem = (itemHref) => {
+        if (!itemHref) return;
+        window.location.href = itemHref;
+        setMenuOpen(false);
+    };
+
+    const openNewTab = () => {
+        const targetHref = href || resolvedPrimaryHref;
+        if (!targetHref) return;
+        window.open(targetHref, '_blank', 'noopener,noreferrer');
+        setMenuOpen(false);
+    };
+
+    useEffect(() => {
+        if (!menuOpen) return;
+        const onDocMouseDown = (e) => {
+            // Close only if click is outside both the trigger wrapper and the portal menu content
+            const inWrapper = wrapperRef.current && wrapperRef.current.contains(e.target);
+            const inMenu = menuContentRef.current && menuContentRef.current.contains(e.target);
+            if (!inWrapper && !inMenu) setMenuOpen(false);
+        };
+        const onKey = (e) => {
+            if (e.key === 'Escape') {
+                setMenuOpen(false);
+                // return focus to menu button for accessibility
+                menuButtonRef.current && menuButtonRef.current.focus();
+            }
+        };
+        document.addEventListener('mousedown', onDocMouseDown);
+        document.addEventListener('keydown', onKey);
+        return () => {
+            document.removeEventListener('mousedown', onDocMouseDown);
+            document.removeEventListener('keydown', onKey);
+        };
+    }, [menuOpen]);
+
+    // Keep the menu positioned relative to the trigger via viewport rect
+    useEffect(() => {
+        if (!menuOpen) return;
+        const updateRect = () => {
+            const node = (menuAnchor === 'wrapper' ? wrapperRef.current : menuButtonRef.current);
+            if (node) {
+                setMenuRect(node.getBoundingClientRect());
+            }
+        };
+        updateRect();
+        const onScroll = () => updateRect();
+        const onResize = () => updateRect();
+        window.addEventListener('scroll', onScroll, true);
+        window.addEventListener('resize', onResize);
+        return () => {
+            window.removeEventListener('scroll', onScroll, true);
+            window.removeEventListener('resize', onResize);
+        };
+    }, [menuOpen, menuAnchor]);
+
+    return (
+        <div ref={wrapperRef} className={`relative inline-flex items-stretch rounded-lg shadow overflow-visible select-none ${className}`}>
+            <button
+                type="button"
+                onClick={onPrimaryClick}
+                className="px-5 py-2.5 text-white font-semibold hover:brightness-95 focus:outline-none"
+                style={lightBlueStyle}
+                aria-label={label}
+                aria-haspopup={primaryOpensMenu ? 'menu' : undefined}
+                aria-expanded={primaryOpensMenu ? menuOpen : undefined}
+            >
+                {label}
+            </button>
+            <button
+                ref={menuButtonRef}
+                type="button"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setMenuOpen((v) => {
+                        const next = !v;
+                        if (!v) {
+                            const node = (menuAnchor === 'wrapper' ? wrapperRef.current : menuButtonRef.current);
+                            if (node) setMenuRect(node.getBoundingClientRect());
+                        }
+                        return next;
+                    });
+                }}
+                className="px-3 py-2.5 text-white hover:brightness-95 focus:outline-none border-l border-white/20"
+                style={lightBlueStyle}
+                aria-haspopup="menu"
+                aria-expanded={menuOpen}
+                aria-label={`${label} options`}
+                title="More options"
+            >
+                {/* Down arrow icon */}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
+                    <path fillRule="evenodd" d="M10 14a1 1 0 0 1-.7-.3l-5-5a1 1 0 1 1 1.4-1.4L10 11.59l4.3-4.3a1 1 0 1 1 1.4 1.42l-5 5a1 1 0 0 1-.7.29Z" clipRule="evenodd" />
+                </svg>
+            </button>
+
+            {menuOpen && (
+                <PortalMenu anchorRect={menuRect} menuRef={menuContentRef}>
+                    <div
+                        role="menu"
+                        aria-label={`${label} menu`}
+                        className="min-w-[11rem] rounded-md border border-slate-200 bg-white shadow-lg overflow-hidden"
+                    >
+                        {Array.isArray(menuItems) && menuItems.length > 0 ? (
+                            <div className="py-1">
+                                {menuItems.map((item, idx) => (
+                                    <button
+                                        key={idx}
+                                        type="button"
+                                        role="menuitem"
+                                        onClick={() => onSelectItem(item.href)}
+                                        className="w-full text-left px-3 py-2 hover:bg-slate-50"
+                                    >
+                                        <div className="text-sm font-medium text-slate-800">{item.label}</div>
+                                        {item.description && (
+                                            <div className="mt-0.5 text-[11px] leading-4 text-slate-500">{item.description}</div>
+                                        )}
+                                    </button>
+                                ))}
+                            </div>
+                        ) : (
+                            <button
+                                type="button"
+                                role="menuitem"
+                                onClick={openNewTab}
+                                className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                            >
+                                Open in new tab
+                            </button>
+                        )}
+                    </div>
+                </PortalMenu>
+            )}
         </div>
     );
 };
@@ -305,6 +498,24 @@ const Sponsors = ({sponsors}) => {
     const [openAccordions, setOpenAccordions] = useState({venmo: false, cash: false});
 
     const stripePaymentLink = process.env.REACT_APP_STRIPE_PAYMENT_LINK || '';
+    // Tiered donation links and optional descriptions (set via GitHub Action secrets)
+    const tier1Link = process.env.REACT_APP_STRIPE_TIER1_LINK || '';
+    const tier2Link = process.env.REACT_APP_STRIPE_TIER2_LINK || '';
+    const tier3Link = process.env.REACT_APP_STRIPE_TIER3_LINK || '';
+    const tier4Link = process.env.REACT_APP_STRIPE_TIER4_LINK || '';
+    const tier1Desc = 'As a sponsor you will receive: Team photo, Team thank-you note.';
+    const tier2Desc = 'As a sponsor you will receive: Super Fan Package, 2 social media shout-outs.';
+    const tier3Desc = 'As a sponsor you will receive: Double Play Package, Logo on website, Team sponsorship T-shirt.';
+    const tier4Desc = 'As a sponsor you will receive: Home Run Hero Package, Team sponsorship plaque for your business.';
+
+    const tierMenuItems = useMemo(() => {
+        const items = [];
+        if (tier1Link) items.push({ label: 'Super Fan $100', description: tier1Desc, href: tier1Link });
+        if (tier2Link) items.push({ label: 'Double Play Partner $250', description: tier2Desc, href: tier2Link });
+        if (tier3Link) items.push({ label: 'Home Run Hero $500', description: tier3Desc, href: tier3Link });
+        if (tier4Link) items.push({ label: 'Grand Slam Champion $1000', description: tier4Desc, href: tier4Link });
+        return items;
+    }, [tier1Link, tier2Link, tier3Link, tier4Link, tier1Desc, tier2Desc, tier3Desc, tier4Desc]);
 
     return (
         <section className="py-16 bg-white" id="sponsors">
@@ -363,24 +574,18 @@ const Sponsors = ({sponsors}) => {
                                             continue.
                                         </p>
                                         <div className="mt-4 flex flex-wrap items-center gap-3">
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    window.location.href = stripePaymentLink;
-                                                }}
-                                                className="px-5 py-2.5 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
-                                                aria-label="Proceed to secure Stripe Checkout"
-                                            >
-                                                Pay with Stripe (Same window)
-                                            </button>
-                                            <a
+                                            <SplitLinkButton
                                                 href={stripePaymentLink}
-                                                target="_blank"
-                                                rel="noreferrer noopener"
-                                                className="px-4 py-2 rounded-md border border-blue-200 text-blue-700 hover:bg-blue-50"
-                                            >
-                                                Open in new tab
-                                            </a>
+                                                label="Pay A Custom Amount"
+                                            />
+                                            {tierMenuItems.length > 0 && (
+                                                <SplitLinkButton
+                                                    label="Select A Donation Tier"
+                                                    menuItems={tierMenuItems}
+                                                    menuAnchor="wrapper"
+                                                    primaryOpensMenu
+                                                />
+                                            )}
                                         </div>
                                     </div>
                                 ) : (
