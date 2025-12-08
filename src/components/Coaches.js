@@ -30,7 +30,7 @@ const Coaches = () => {
     ];
 
     return (
-        <section className="coaches">
+        <section className="coaches" id="coaches">
             <div className="container">
                 <h2>Our Coaching Staff</h2>
                 <div className="coaches-container">
