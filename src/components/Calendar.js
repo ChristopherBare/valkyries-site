@@ -151,7 +151,7 @@ export default function TeamCalendar() {
     };
 
     return (
-        <section className="calendar">
+        <section className="calendar" id="calendar">
             <div className="container">
                 <h2>Team Calendar</h2>
 

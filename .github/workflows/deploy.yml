@@ -99,6 +99,17 @@ jobs:
           REACT_APP_GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
           REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           REACT_APP_STRIPE_PAYMENT_LINK: ${{ secrets.REACT_APP_STRIPE_PAYMENT_LINK }}
+          # Legacy single tiered donation link (kept for backward compatibility)
+          REACT_APP_STRIPE_TIERED_DONATION_LINK: ${{ secrets.REACT_APP_STRIPE_TIERED_DONATION_LINK }}
+          # New multi-tier donation links and optional descriptions
+          REACT_APP_STRIPE_TIER1_LINK: ${{ secrets.REACT_APP_STRIPE_TIER1_LINK }}
+          REACT_APP_STRIPE_TIER2_LINK: ${{ secrets.REACT_APP_STRIPE_TIER2_LINK }}
+          REACT_APP_STRIPE_TIER3_LINK: ${{ secrets.REACT_APP_STRIPE_TIER3_LINK }}
+          REACT_APP_STRIPE_TIER4_LINK: ${{ secrets.REACT_APP_STRIPE_TIER4_LINK }}
+          REACT_APP_STRIPE_TIER1_DESC: ${{ secrets.REACT_APP_STRIPE_TIER1_DESC }}
+          REACT_APP_STRIPE_TIER2_DESC: ${{ secrets.REACT_APP_STRIPE_TIER2_DESC }}
+          REACT_APP_STRIPE_TIER3_DESC: ${{ secrets.REACT_APP_STRIPE_TIER3_DESC }}
+          REACT_APP_STRIPE_TIER4_DESC: ${{ secrets.REACT_APP_STRIPE_TIER4_DESC }}
           REACT_APP_STRIPE_PUBLISHABLE_KEY: ${{ secrets.REACT_APP_STRIPE_PUBLISHABLE_KEY }}
 
       - name: Configure AWS Credentials

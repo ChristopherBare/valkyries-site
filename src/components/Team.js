@@ -37,7 +37,7 @@ const Team = () => {
 
 
     return (
-        <section className="team">
+        <section className="team" id="team">
             <div className="container">
                 <h2>Meet Our Team</h2>
                 <div className="team-container">

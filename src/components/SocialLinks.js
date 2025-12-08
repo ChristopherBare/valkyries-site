@@ -12,7 +12,7 @@ const SocialLinks = () => {
     ];
 
     return (
-        <section className="social-links">
+        <section className="social-links" id="connect">
             <div className="container">
                 <h2>Connect With Us</h2>
                 <p className="social-description">
