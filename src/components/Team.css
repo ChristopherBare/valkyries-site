@@ -143,6 +143,8 @@
   object-fit: contain;
 }
 
+/* When logoColor is set, mask will be applied via inline styles */
+
 .team-name-wrapper {
   text-align: center;
 }

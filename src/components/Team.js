@@ -11,6 +11,7 @@ const Team = () => {
             id: 'blue',
             name: 'Valkyries Blue',
             color: '#87CEEB',
+            logoColor: '#C29B0C',
             players: [
                 { id: 1, name: 'Sawyer', birthday: '2015-05-09', position: 'Pitcher | Utility' },
                 { id: 2, name: 'Aurora', birthday:'2015-02-06', position: 'Catcher | Utility', focus: 'top' },
@@ -30,6 +31,7 @@ const Team = () => {
             id: 'green',
             name: 'Valkyries Green',
             color: '#90EE90',
+            logoColor: '#C29B0C',
             players: [
                 { id: 13, name: 'Player One', birthday: '2015-03-15', position: 'Pitcher | Utility' },
                 { id: 14, name: 'Player Two', birthday: '2015-06-20', position: 'Catcher | Utility' },
@@ -150,11 +152,22 @@ const Team = () => {
                                 aria-label={`Toggle ${team.name} roster`}
                                 aria-expanded={activeTeam === team.id}
                             >
-                                <img
-                                    src="/VALKYRIE_LOGO.svg"
-                                    alt={team.name}
+                                <div
                                     className="team-logo-image opacity-90 group-hover:opacity-100 transition"
-                                />
+                                    style={team.logoColor ? {
+                                        mask: 'url(/VALKYRIE_LOGO.svg) center/contain no-repeat',
+                                        WebkitMask: 'url(/VALKYRIE_LOGO.svg) center/contain no-repeat',
+                                        backgroundColor: team.logoColor
+                                    } : {}}
+                                >
+                                    {!team.logoColor && (
+                                        <img
+                                            src="/VALKYRIE_LOGO.svg"
+                                            alt={team.name}
+                                            className="w-full h-full object-contain"
+                                        />
+                                    )}
+                                </div>
                             </button>
 
                             <div className="team-name-wrapper">
