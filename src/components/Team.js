@@ -6,11 +6,11 @@ const Team = () => {
         { id: 1, name: 'Sawyer', birthday: '2015-05-09', position: 'Pitcher | Utility' },
         { id: 2, name: 'Aurora', birthday:'2015-02-06', position: 'Catcher | Utility', focus: 'top' }, //focus is optional so that you can tweak the image position
         { id: 3, name: 'Jocelynn', birthday: '2015-02-28', position: 'Catcher | Utility' },
-        { id: 4, name: 'Josephine', birthday: '2015-05-25', position: 'Pitcher | Utility' },
+        { id: 4, name: 'Josephine', birthday: '2015-05-25', position: 'Pitcher | Utility', focus: 'top' },
         { id: 5, name: 'Caroline', birthday: '2014-09-27', position: 'Pitcher | Utility' },
         { id: 6, name: 'Sadie', birthday: '2015-11-13', position: 'Utility' },
         { id: 7, name: 'Lily', birthday: '2014-11-11', position: 'Pitcher | Utility' },
-        { id: 8, name: 'McKenzie', birthday: '2015-01-28', position: 'Pitcher | Catcher | Utility' },
+        { id: 8, name: 'McKenzie', birthday: '2015-01-28', position: 'Pitcher | Catcher | Utility', focus: 'top'},
         { id: 9, name: 'Eliana', birthday: '2015-02-06', position: 'Catcher | Utility' },
         { id: 10, name: 'Elli', birthday: '2014-11-18', position: 'Pitcher | Utility' },
         { id: 11, name: 'Amalia', birthday: '2015-12-02', position: 'Utility' },
