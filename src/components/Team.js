@@ -8,7 +8,7 @@ const Team = () => {
         { id: 3, name: 'Jocelynn', birthday: '2015-02-28', position: 'Catcher | Utility' },
         { id: 4, name: 'Josephine', birthday: '2015-05-25', position: 'Pitcher | Utility', focus: 'top' },
         { id: 5, name: 'Caroline', birthday: '2014-09-27', position: 'Pitcher | Utility' },
-        { id: 6, name: 'Sadie', birthday: '2015-11-13', position: 'Utility' },
+        { id: 6, name: 'Sadie', birthday: '2015-11-13', position: 'Utility', focus: 'top' },
         { id: 7, name: 'Lily', birthday: '2014-11-11', position: 'Pitcher | Utility' },
         { id: 8, name: 'McKenzie', birthday: '2015-01-28', position: 'Pitcher | Catcher | Utility', focus: 'top'},
         { id: 9, name: 'Eliana', birthday: '2015-02-06', position: 'Catcher | Utility' },
