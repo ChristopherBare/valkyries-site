@@ -14,7 +14,7 @@ const Team = () => {
         { id: 9, name: 'Eliana', birthday: '2015-02-06', position: 'Catcher | Utility' },
         { id: 10, name: 'Elli', birthday: '2014-11-18', position: 'Pitcher | Utility' },
         { id: 11, name: 'Amalia', birthday: '2015-12-02', position: 'Utility' },
-        { id: 12, name: 'Gia', birthday: '2014-09-14', position: 'Utility' }
+        { id: 12, name: 'Gia', birthday: '2014-09-14', position: 'Utility', focus: 'top' }
     ];
 
     // Helper function to create a public image URL based on the player's name
