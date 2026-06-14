@@ -26,6 +26,14 @@ const Coaches = () => {
             role: 'Assistant Coach',
             bio: 'Coach Katie brings 4+ years of youth coaching and a lifelong love of the game. A former Little League softball player who also coached Little League baseball, she’s played in adult leagues in San Diego and Charlotte and lives her motto: practice how you play. Known for skill-building, high energy, and hype playlists, she treats every roster like family and can’t wait to help this team grow confident, play smart, and celebrate every win.\n',
             imageUrl: '/images/coaches/Katie.jpg'
+        },
+        {
+            id: 3,
+            name: 'Jeremy Kuster',
+            role: 'Assistant Coach',
+            bio: 'Just a cool guy.\n',
+            imageUrl: '/images/coaches/Jeremy.png',
+            focus: 'top'
         }
     ];
 
