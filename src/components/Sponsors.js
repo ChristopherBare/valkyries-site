@@ -37,7 +37,11 @@ const Modal = ({open, onClose, children}) => {
                 onClick={onClose}
                 aria-hidden="true"
             />
-            <div className="relative bg-white w-[min(100%,1000px)] max-h-[90vh] overflow-y-auto rounded-xl shadow-2xl">
+            <div
+                className="relative bg-white w-[min(100%,1000px)] max-h-[90vh] overflow-y-auto rounded-xl shadow-2xl"
+                role="dialog"
+                aria-modal="true"
+            >
                 <button
                     onClick={onClose}
                     className="absolute right-3 top-3 text-gray-500 hover:text-gray-700 focus:outline-none text-3xl leading-none"
@@ -358,6 +362,9 @@ const Drawer = ({open, onClose, children}) => {
             <div
                 ref={panelRef}
                 className={`absolute right-0 top-0 h-full w-full md:w-1/2 bg-white shadow-2xl overflow-y-auto transform ${panelTransition} will-change-transform ${visible ? 'translate-x-0' : 'translate-x-full'}`}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Sponsor Profile"
             >
                 <button
                     onClick={onClose}

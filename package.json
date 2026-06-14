@@ -17,6 +17,7 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "brain.js": "^1.6.1",
+    "caniuse-lite": "^1.0.30001799",
     "lucide-react": "^0.546.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
@@ -50,7 +51,8 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.22",
-    "postcss": "^8.5.6",
+    "baseline-browser-mapping": "^2.10.37",
+    "postcss": "^8.5.15",
     "tailwindcss": "^3.4.18"
   }
 }
