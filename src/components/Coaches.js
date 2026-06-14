@@ -28,7 +28,7 @@ const Coaches = () => {
             imageUrl: '/images/coaches/Katie.jpg'
         },
         {
-            id: 3,
+            id: 4,
             name: 'Jeremy Kuster',
             role: 'Assistant Coach',
             bio: 'Just a cool guy.\n',

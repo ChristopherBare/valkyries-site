@@ -2,7 +2,6 @@
 .coaches {
     padding: 5rem 0;
     background: var(--sky-blue);
-    margin-bottom: 4rem; /* space below section so next block isn't cramped */
 }
 
 /* Responsive grid: wide cards, even spacing */
