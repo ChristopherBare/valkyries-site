@@ -181,7 +181,7 @@ const Hero = () => {
             <a href="#coaches" onClick={handleNavClick} className="block rounded-md px-4 py-4 md:py-2 text-lg md:text-base text-gray-800 hover:bg-sky-50 hover:text-sky-700 transition">Coaches</a>
           </li>
           <li>
-            <a href="#team" onClick={handleNavClick} className="block rounded-md px-4 py-4 md:py-2 text-lg md:text-base text-gray-800 hover:bg-sky-50 hover:text-sky-700 transition">Team</a>
+            <a href="#team" onClick={handleNavClick} className="block rounded-md px-4 py-4 md:py-2 text-lg md:text-base text-gray-800 hover:bg-sky-50 hover:text-sky-700 transition">Teams</a>
           </li>
           <li>
             <a href="#calendar" onClick={handleNavClick} className="block rounded-md px-4 py-4 md:py-2 text-lg md:text-base text-gray-800 hover:bg-sky-50 hover:text-sky-700 transition">Calendar</a>
