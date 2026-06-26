@@ -23,7 +23,7 @@ const Coaches = () => {
             id: 3,
             name: 'Jeremy Kuster',
             role: 'Assistant Coach',
-            bio: 'Just a cool guy.\n',
+            bio: 'Coach Jeremy has been an assistant coach and a familiar face on the field for several years. He loves working with the girls, helping them grow their skills, and staying connected to the game he enjoys so much. His passion for softball doesn’t stop when coaching ends, when he isn’t on the field with the team, you can usually find him playing in his own adult league! Coach Jeremy brings encouragement, experience, and a love for the game to every practice and game day.\n',
             imageUrl: '/images/coaches/Jeremy.png',
             focus: 'top'
         },
