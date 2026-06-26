@@ -2,7 +2,6 @@
 .coaches {
     padding: 5rem 0;
     background: var(--sky-blue);
-    margin-bottom: 4rem; /* space below section so next block isn't cramped */
 }
 
 /* Responsive grid: wide cards, even spacing */
@@ -34,7 +33,7 @@
 
 /* Image area: consistent, responsive height via aspect-ratio */
 .coach-image-container {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     background: var(--light-blue);
     display: flex;
