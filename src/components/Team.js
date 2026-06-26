@@ -13,46 +13,43 @@ const Team = () => {
             color: '#87CEEB',
             logoColor: '#C29B0C',
             players: [
-                { id: 1, name: 'Sawyer', birthday: '2015-05-09', position: 'Pitcher | Utility' },
-                { id: 2, name: 'Aurora', birthday:'2015-02-06', position: 'Catcher | Utility', focus: 'top' },
-                { id: 3, name: 'Jocelynn', birthday: '2015-02-28', position: 'Catcher | Utility' },
-                { id: 4, name: 'Josephine', birthday: '2015-05-25', position: 'Pitcher | Utility', focus: 'top' },
-                { id: 5, name: 'Caroline', birthday: '2014-09-27', position: 'Pitcher | Utility' },
-                { id: 6, name: 'Sadie', birthday: '2015-11-13', position: 'Utility', focus: 'top' },
-                { id: 7, name: 'Lily', birthday: '2014-11-11', position: 'Pitcher | Utility' },
-                { id: 8, name: 'McKenzie', birthday: '2015-01-28', position: 'Pitcher | Catcher | Utility', focus: 'top' },
-                { id: 9, name: 'Eliana', birthday: '2015-02-06', position: 'Catcher | Utility' },
-                { id: 10, name: 'Elli', birthday: '2014-11-18', position: 'Pitcher | Utility' },
-                { id: 11, name: 'Amalia', birthday: '2015-12-02', position: 'Utility' },
-                { id: 12, name: 'Gia', birthday: '2014-09-14', position: 'Utility', focus: 'top' }
+                { id: 1, firstName: 'Josephine', lastName: 'Steutterman', birthday: '2015-05-25', position: 'Pitcher | Utility', focus: 'top' },
+                { id: 2, firstName: 'Aurora', lastName: 'Bare', birthday:'2015-02-06', position: 'Catcher | Utility', focus: 'top' },
+                { id: 3, firstName: 'Jocelynn', lastName: 'Carlson', birthday: '2015-02-28', position: 'Catcher | Utility' },
+                { id: 4, firstName: 'Riley', lastName: 'Brown', birthday: '2015-08-06', position: 'Pitcher | Utility' },
+                { id: 5, firstName: 'Lakyn', lastName: 'Jones', birthday: '2015-02-09', position: 'Utility' },
+                { id: 6, firstName: 'Lily', lastName: 'Yura', birthday: '2014-11-11', position: 'Pitcher | Utility' },
+                { id: 7, firstName: 'McKenzie', lastName: 'Jordan', birthday: '2015-01-28', position: 'Utility', focus: 'top' },
+                { id: 8, firstName: 'Eliana', lastName: 'Kuster', birthday: '2015-02-06', position: 'Catcher | Utility' },
+                { id: 9, firstName: 'Amalia', lastName: 'Coe', birthday: '2015-12-02', position: 'Utility' },
+                { id: 10, firstName: 'Gia', lastName: 'Risavi', birthday: '2014-09-14', position: 'Utility', focus: 'top' }
             ]
         },
         green: {
             id: 'green',
             name: 'Valkyries Green',
-            color: '#006A4E',
+            color: '#005035',
             logoColor: '#C29B0C',
             players: [
-                { id: 13, name: 'Player One', birthday: '2015-03-15', position: 'Pitcher | Utility' },
-                { id: 14, name: 'Player Two', birthday: '2015-06-20', position: 'Catcher | Utility' },
-                { id: 15, name: 'Player Three', birthday: '2014-12-10', position: 'Utility' },
-                { id: 16, name: 'Player Four', birthday: '2015-04-25', position: 'Pitcher | Utility' },
-                { id: 17, name: 'Player Five', birthday: '2015-08-05', position: 'Catcher | Utility' },
-                { id: 18, name: 'Player Six', birthday: '2014-10-30', position: 'Utility' },
-                { id: 19, name: 'Player Seven', birthday: '2015-01-18', position: 'Pitcher | Utility' },
-                { id: 20, name: 'Player Eight', birthday: '2015-07-12', position: 'Catcher | Utility' },
-                { id: 21, name: 'Player Nine', birthday: '2014-11-22', position: 'Utility' },
-                { id: 22, name: 'Player Ten', birthday: '2015-05-08', position: 'Pitcher | Utility' },
-                { id: 23, name: 'Player Eleven', birthday: '2015-02-14', position: 'Catcher | Utility' },
-                { id: 24, name: 'Player Twelve', birthday: '2014-09-03', position: 'Utility' }
+                { id: 11, firstName: 'Miranda', lastName: 'Collett', birthday: '2016-09-10', position: 'Catcher | Utility' },
+                { id: 12, firstName: 'Amelia', lastName: 'Augustine', birthday: '2015-09-08', position: 'Catcher | Utility' },
+                { id: 13, firstName: 'Sadie', lastName: 'Landman', birthday: '2016-06-09', position: 'Pitcher | Utility' },
+                { id: 14, firstName: 'Mia', lastName: 'Jordan', birthday: '2017-08-16', position: 'Utility' },
+                { id: 15, firstName: 'Elizah', lastName: 'Gaddie', birthday: '2017-06-12', position: 'Catcher | Utility' },
+                { id: 16, firstName: 'Athena', lastName: 'Garcia', birthday: '2015-11-11', position: 'Pitcher | Utility' },
+                { id: 17, firstName: 'Jordyn', lastName: 'Bentley', birthday: '2016-04-12', position: 'Pitcher | Utility' },
+                { id: 18, firstName: 'Kennadi', lastName: 'Johnson', birthday: '2016-03-09', position: 'Utility' },
+                { id: 19, firstName: 'Jayden', lastName: 'May', birthday: '2017-06-14', position: 'Catcher | Utility' },
+                { id: 20, firstName: 'Olivia', lastName: 'Martin', birthday: '2015-09-15', position: 'Catcher | Utility' },
             ]
         }
     };
 
     // Helper function to create a public image URL based on the player's name
-    const getPlayerImage = (name) => {
-        // Replace spaces with underscores or dashes if your files are named that way
-        const formattedName = name.replace(/\s+/g, '_');
+    const getPlayerImage = (firstName, lastName) => {
+        const fullName = `${firstName}_${lastName}`;
+        // Replace spaces with underscores if they exist in names
+        const formattedName = fullName.replace(/\s+/g, '_');
         return `/images/players/${formattedName}.jpg`;
     };
 
@@ -104,8 +101,8 @@ const Team = () => {
                 <div className="player-card" key={player.id}>
                     <div className="player-image">
                         <img
-                            src={getPlayerImage(player.name)}
-                            alt={player.name}
+                            src={getPlayerImage(player.firstName, player.lastName)}
+                            alt={player.firstName}
                             style={{
                                 objectPosition:
                                     player.focus === 'top'
@@ -122,11 +119,11 @@ const Team = () => {
                             }}
                         />
                         <div className="player-initials" style={{ display: 'none' }}>
-                            {player.name.split(' ').map(n => n[0]).join('')}
+                            {player.firstName[0]}{player.lastName[0]}
                         </div>
                     </div>
                     <div className="player-info">
-                        <h3>{player.name}</h3>
+                        <h3>{player.firstName}</h3>
                         <p className="player-position">{player.position}</p>
                         <p className="player-age">Age: {calculateAge(player.birthday)}</p>
                     </div>

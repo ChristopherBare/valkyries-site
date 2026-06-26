@@ -9,32 +9,32 @@ const Coaches = () => {
             role: 'Head Coach',
             bio: 'Jessica brings a lifelong love of softball and years of experience both on and off the field. A former high school standout who excelled as a catcher and outfielder, Jessica combines her technical knowledge with a deep passion for player development. She began coaching at the local recreational level, where her leadership and ability to connect with young athletes quickly stood out. Her dedication and expertise led to her being recruited as a catching coach—an area where her experience truly shines.\n' +
                'Her coaching philosophy centers on effort, respect, and a genuine love for the sport of softball.',
-            imageUrl: '/images/coaches/Jessica.jpg',
+            imageUrl: '/images/coaches/Jessica_02.jpg',
             focus: 'top'
         },
         {
             id: 2,
-            name: 'Tiana Newell',
-            role: 'Assistant Coach',
-            bio: 'Coach Tiana is a multi-sport athlete (water polo, volleyball, basketball, and adult rec softball) who brings a teamwork-first mindset to coaching. A nurse by day, she builds skill and confidence while teaching athletes to rely on one another and be great teammates. Fun facts: she’s bounced between CA and NC five times, met Coach Katie in 2009, always has the best first-aid kit—and agrees snacks are the real MVP.\n',
-            imageUrl: '/images/coaches/Tiana.jpg',
-            focus: 'bottom'
-        },
-        {
-            id: 3,
             name: 'Katie Comier',
             role: 'Assistant Coach',
             bio: 'Coach Katie brings 4+ years of youth coaching and a lifelong love of the game. A former Little League softball player who also coached Little League baseball, she’s played in adult leagues in San Diego and Charlotte and lives her motto: practice how you play. Known for skill-building, high energy, and hype playlists, she treats every roster like family and can’t wait to help this team grow confident, play smart, and celebrate every win.\n',
             imageUrl: '/images/coaches/Katie.jpg'
         },
         {
-            id: 4,
+            id: 3,
             name: 'Jeremy Kuster',
             role: 'Assistant Coach',
             bio: 'Just a cool guy.\n',
             imageUrl: '/images/coaches/Jeremy.png',
             focus: 'top'
-        }
+        },
+        {
+            id: 4,
+            name: 'Caleb Johnson',
+            role: 'Assistant Coach',
+            bio: 'Caleb Johnson has spent the past couple of seasons coaching with Lake Norman Little League, serving as both an assistant coach and, most recently, a head coach. Having grown up playing competitive sports, Caleb understands the dedication, teamwork, and mindset it takes to compete at a high level. He is excited to bring that experience, along with a high level of energy and enthusiasm, to help players build confidence, develop their skills, and foster a lifelong love for the game.\n',
+            imageUrl: '/images/coaches/Caleb.png',
+            focus: 'top'
+        },
     ];
 
     return (
@@ -46,13 +46,13 @@ const Coaches = () => {
                         <div className="coach-card" key={coach.id}>
                             <div className="coach-image-container">
                                 {coach.imageUrl ? (
-                                    <img src={coach.imageUrl} alt={coach.name} className="coach-image" style={{
+                                    <img src={coach.imageUrl} alt={coach.name.split(' ')[0]} className="coach-image" style={{
                                         objectPosition:
                                             coach.focus === 'top'
                                                 ? '50% 20%'
                                                 : coach.focus === 'bottom'
                                                     ? '50% 80%'
-                                                    : '50% 50%' // default center
+                                                    : '50% 50%', // default center
                                     }}/>
                                 ) : (
                                     <div className="coach-image-placeholder">
@@ -63,7 +63,7 @@ const Coaches = () => {
                                 )}
                             </div>
                             <div className="coach-info">
-                                <h3>{coach.name}</h3>
+                                <h3>{coach.name.split(' ')[0]}</h3>
                                 <h4>{coach.role}</h4>
                                 <p>{coach.bio}</p>
                             </div>
