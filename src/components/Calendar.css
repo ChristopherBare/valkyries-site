@@ -1,7 +1,6 @@
 .calendar {
     padding: 5rem 0;
-    /*background: var(--white);*/
-    margin-bottom: 3rem; /* 👈 adds space below the entire calendar section */
+    background: var(--off-white);
 }
 .fc .fc-toolbar-title {
     color: var(--dark-text);
