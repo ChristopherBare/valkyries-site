@@ -16,8 +16,8 @@ const Team = () => {
                 { id: 1, firstName: 'Josephine', lastName: 'Steutterman', birthday: '2015-05-25', position: 'Pitcher | Utility', focus: 'top' },
                 { id: 2, firstName: 'Aurora', lastName: 'Bare', birthday:'2015-02-06', position: 'Catcher | Utility', focus: 'top' },
                 { id: 3, firstName: 'Jocelynn', lastName: 'Carlson', birthday: '2015-02-28', position: 'Catcher | Utility' },
-                { id: 4, firstName: 'Riley', lastName: 'Brown', birthday: '2015-08-06', position: 'Pitcher | Utility' },
-                { id: 5, firstName: 'Lakyn', lastName: 'Jones', birthday: '2015-02-09', position: 'Utility' },
+                { id: 4, firstName: 'Riley', lastName: 'Beagle', birthday: '2015-08-06', position: 'Pitcher | Utility' },
+                { id: 5, firstName: 'Lakyn', lastName: 'Furdella', birthday: '2015-02-09', position: 'Utility' },
                 { id: 6, firstName: 'Lily', lastName: 'Yura', birthday: '2014-11-11', position: 'Pitcher | Utility' },
                 { id: 7, firstName: 'McKenzie', lastName: 'Jordan', birthday: '2015-01-28', position: 'Utility', focus: 'top' },
                 { id: 8, firstName: 'Eliana', lastName: 'Kuster', birthday: '2015-02-06', position: 'Catcher | Utility' },
@@ -40,7 +40,7 @@ const Team = () => {
                 { id: 17, firstName: 'Jordyn', lastName: 'Bentley', birthday: '2016-04-12', position: 'Pitcher | Utility' },
                 { id: 18, firstName: 'Kennadi', lastName: 'Johnson', birthday: '2016-03-09', position: 'Utility' },
                 { id: 19, firstName: 'Jayden', lastName: 'May', birthday: '2017-06-14', position: 'Catcher | Utility' },
-                { id: 20, firstName: 'Olivia', lastName: 'Martin', birthday: '2015-09-15', position: 'Catcher | Utility' },
+                { id: 20, firstName: 'Olivia', lastName: 'Perez', birthday: '2015-09-15', position: 'Catcher | Utility' },
             ]
         }
     };
