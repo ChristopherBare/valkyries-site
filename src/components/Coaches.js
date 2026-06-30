@@ -35,7 +35,28 @@ const Coaches = () => {
             imageUrl: '/images/coaches/Caleb.png',
             focus: 'top'
         },
+        {
+            id: 5,
+            name: 'Michael Jordan',
+            role: 'Assistant Coach',
+            bio: 'Coach Michael is 36 years old and has been coaching for 4 years, including 2 years as a head coach. He brings great energy to the field and is known for being loud, positive, and encouraging. Coach Michael enjoys pushing the girls to be their best, helping them grow in confidence, and creating an atmosphere where players feel supported while working hard and having fun.\n',
+            imageUrl: '/images/coaches/Michael.jpg',
+            focus: 'middle'
+        },
     ];
+
+    const getObjectPosition = (focus) => {
+        switch (focus) {
+            case 'top':
+                return 'center top';
+            case 'middle':
+                return 'center center';
+            case 'bottom':
+                return 'center bottom';
+            default:
+                return 'center center';
+        }
+    };
 
     return (
         <section className="coaches" id="coaches">
@@ -46,14 +67,12 @@ const Coaches = () => {
                         <div className="coach-card" key={coach.id}>
                             <div className="coach-image-container">
                                 {coach.imageUrl ? (
-                                    <img src={coach.imageUrl} alt={coach.name.split(' ')[0]} className="coach-image" style={{
-                                        objectPosition:
-                                            coach.focus === 'top'
-                                                ? '50% 20%'
-                                                : coach.focus === 'bottom'
-                                                    ? '50% 80%'
-                                                    : '50% 50%', // default center
-                                    }}/>
+                                    <img 
+                                        src={coach.imageUrl} 
+                                        alt={coach.name.split(' ')[0]} 
+                                        className="coach-image" 
+                                        style={{ objectPosition: getObjectPosition(coach.focus) }}
+                                    />
                                 ) : (
                                     <div className="coach-image-placeholder">
                     <span className="coach-initials">
